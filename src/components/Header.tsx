@@ -1,6 +1,7 @@
 'use client';
 
 import { useUserStore } from '@/store/userStore';
+import { Button } from '@/components/atoms/Button';
 import type { UserRole } from '@/types/user';
 
 export function Header() {
@@ -19,15 +20,21 @@ export function Header() {
     .slice(0, 2) ?? 'U';
 
   return (
-    <header className="h-14 flex items-center justify-between px-6 bg-[#071120] text-white shrink-0 border-b border-white/[6%]">
+    <header className="h-14 flex items-center justify-between px-6 bg-primary text-white shrink-0 border-b border-white/[6%]">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
+        <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0" aria-hidden>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M2 3h10M2 7h7M2 11h5" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </div>
-        <div className="flex items-baseline gap-2">
+        {/* Compact brand for mobile: small logo + short name */}
+        <div className="flex items-center gap-2 md:hidden">
+          <span className="font-semibold text-sm tracking-tight text-white">PSL</span>
+        </div>
+
+        {/* Full brand for md+ */}
+        <div className="hidden md:flex items-baseline gap-2">
           <span className="font-semibold text-[13px] tracking-tight text-white">Pearson Specter Litt</span>
           <span className="text-white/20 text-xs">|</span>
           <span className="text-white/40 text-[11px] tracking-wide">Command Center</span>
@@ -36,13 +43,14 @@ export function Header() {
 
       {/* Right controls */}
       <div className="flex items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={toggleRole}
           title="Toggle role for demo"
-          className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] hover:bg-white/10 transition-all"
+          variant="primary"
+          className="flex items-center gap-2"
         >
-          <span className="text-white/40">Viewing as</span>
+          <span className="hidden md:inline text-white/40">Viewing as</span>
           <span className={`font-semibold capitalize px-1.5 py-0.5 rounded text-[11px] ${
             activeRole === 'attorney'
               ? 'bg-amber-500/20 text-amber-300'
@@ -50,7 +58,7 @@ export function Header() {
           }`}>
             {activeRole}
           </span>
-        </button>
+        </Button>
 
         {user && (
           <div className="flex items-center gap-2">

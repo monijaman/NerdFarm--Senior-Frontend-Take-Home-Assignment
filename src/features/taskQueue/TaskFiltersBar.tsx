@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { clsx } from 'clsx';
+// use native buttons here to guarantee exact utility classes for contrast
 import type { TaskFilters, SortField } from '@/types/task';
 import type { Task } from '@/types/task';
 import { FilterMultiSelect } from '@/components/molecules/FilterMultiSelect';
@@ -40,10 +41,10 @@ export function TaskFiltersBar({
               type="button"
               onClick={() => onSortChange(s)}
               className={clsx(
-                'px-2 py-1 rounded text-[11px] font-medium transition-all',
+                'rounded-full px-3 py-1 text-[11px] leading-none border transition-colors',
                 sortBy === s
-                  ? 'bg-white/15 text-white/90'
-                  : 'text-white/35 hover:text-white/65',
+                  ? 'bg-white/15 text-white/90 border-white/10'
+                  : 'text-white/35 hover:text-white/65 border-transparent',
               )}
             >
               {s === 'priority' ? 'Priority' : s === 'slaDeadline' ? 'SLA' : 'Revenue'}
@@ -57,10 +58,10 @@ export function TaskFiltersBar({
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
           className={clsx(
-            'flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-medium transition-all',
+            'flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] leading-none border transition-colors',
             expanded || activeCount > 0
-              ? 'bg-white/15 text-white/90'
-              : 'text-white/35 hover:text-white/65',
+              ? 'bg-white/15 text-white/90 border-white/10'
+              : 'text-white/35 hover:text-white/65 border-transparent',
           )}
         >
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">

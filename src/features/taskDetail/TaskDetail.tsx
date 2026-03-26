@@ -1,28 +1,17 @@
 'use client';
 
-import { useReducer, useEffect, useCallback, useState } from 'react';
+import { useReducer, useEffect, useCallback } from 'react';
 import { clsx } from 'clsx';
 import { useTaskStore } from '@/store/taskStore';
 import { useUserStore } from '@/store/userStore';
+import { useToast } from '@/context/ToastContext';
 import type { TaskSchema, FormData } from '@/types/schema';
+import type {  State, Action } from './types';
 import { buildDefaultFormData, mergeFormData, buildSubmissionPayload } from './formHelpers';
 import { formatCurrency } from '@/lib/format';
 import { SchemaRenderer } from '@/features/schemaRenderer';
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
 
-type State = {
-  schema: TaskSchema | null;
-  formData: FormData;
-  status: Status;
-};
-
-type Action =
-  | { type: 'RESET' }
-  | { type: 'LOADING' }
-  | { type: 'LOADED'; schema: TaskSchema; formData: FormData }
-  | { type: 'ERROR' }
-  | { type: 'FIELD_CHANGE'; key: string; value: FormData[string] };
 
 const initialState: State = { schema: null, formData: {}, status: 'idle' };
 
@@ -45,11 +34,16 @@ export function TaskDetail() {
   const selectedTaskId = useTaskStore((s) => s.selectedTaskId);
   const tasks = useTaskStore((s) => s.tasks);
   const { user, activeRole } = useUserStore();
+  const { showToast } = useToast();
+  const removeTaskOptimistic = useTaskStore((s) => s.removeTaskOptimistic);
+  const commitRemoval = useTaskStore((s) => s.commitRemoval);
+  const restoreTask = useTaskStore((s) => s.restoreTask);
+  const finalizeRemoval = useTaskStore((s) => s.finalizeRemoval);
+  const selectTask = useTaskStore((s) => s.selectTask);
 
   const task = tasks.find((t) => t.id === selectedTaskId) ?? null;
 
   const [{ schema, formData, status }, dispatch] = useReducer(reducer, initialState);
-  const [toast, setToast] = useState<string | null>(null);
 
   const taskId = task?.id ?? null;
   const schemaRef = task?.schemaRef ?? null;
@@ -67,7 +61,7 @@ export function TaskDetail() {
       fetch(`/api/task-schemas/${schemaRef}`).then((r) => r.json()),
       fetch(`/api/task-data/${taskId}`).then((r) => r.json()),
     ])
-      .then(([fetchedSchema, taskData]: [TaskSchema, Record<string, unknown> | null]) => {
+      .then(([fetchedSchema, taskData]: [TaskSchema, FormData | null]) => {
         if (cancelled) return;
         const defaults = buildDefaultFormData(fetchedSchema);
         const merged = mergeFormData(defaults, taskData);
@@ -94,11 +88,34 @@ export function TaskDetail() {
         disabledActions: [],
       };
       const payload = buildSubmissionPayload(task.id, actionKey, schema, formData, roleRules, user.id);
-      console.log('[Command Center] Action submitted:', payload);
-      setToast(`Action "${actionKey}" submitted successfully.`);
-      setTimeout(() => setToast(null), 3000);
+      console.log('[Command Center] Action submitted (optimistic):', payload);
+
+      // Optimistic removal: mark removing so UI animates, then commit removal after animation
+      removeTaskOptimistic(task.id);
+      const ANIMATION_MS = 320;
+      setTimeout(() => {
+        commitRemoval(task.id);
+      }, ANIMATION_MS);
+
+      // Simulate server request (random failure for demo)
+      const SIM_MS = 800;
+      new Promise<void>((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.9 ? resolve() : reject(new Error('simulated server error'));
+        }, SIM_MS);
+      })
+        .then(() => {
+          // success: finalize removal and show toast
+          finalizeRemoval(task.id);
+          showToast(`Action "${actionKey}" submitted successfully.`, 'success');
+        })
+        .catch((err) => {
+          // failure: restore the task and notify
+          restoreTask(task.id);
+          showToast(`Action failed: ${err?.message ?? 'unknown'}`, 'error');
+        });
     },
-    [task, user, schema, activeRole, formData],
+    [task, user, schema, activeRole, formData, showToast, removeTaskOptimistic, commitRemoval, restoreTask, finalizeRemoval],
   );
 
   if (!task) {
@@ -140,6 +157,16 @@ export function TaskDetail() {
     <div className="flex flex-col h-full overflow-hidden">
       {/* Task meta header */}
       <div className="px-6 pt-5 pb-4 border-b border-border bg-surface shadow-sm shrink-0">
+        {/* Mobile back button when task is selected on small screens */}
+        <div className="md:hidden mb-2">
+          <button
+            type="button"
+            onClick={() => selectTask(null)}
+            className="-ml-1 inline-flex items-center gap-2 px-2 py-1 rounded-md text-sm text-muted bg-white/3"
+          >
+            ← Back
+          </button>
+        </div>
         {/* Top meta row */}
         <div className="flex items-center gap-2 mb-2">
           <span className="text-[10px] font-bold text-muted/80 uppercase tracking-wider">{task.caseNumber}</span>
@@ -180,21 +207,6 @@ export function TaskDetail() {
           onAction={handleAction}
         />
       </div>
-
-      {/* Toast */}
-      {toast && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#0F172A] text-white text-xs font-medium px-4 py-2.5 rounded-lg shadow-xl flex items-center gap-2"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 12l2 2 4-4" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="12" cy="12" r="10" stroke="#4ade80" strokeWidth="1.5" />
-          </svg>
-          {toast}
-        </div>
-      )}
     </div>
   );
 }

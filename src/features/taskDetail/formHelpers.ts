@@ -27,7 +27,7 @@ export function buildDefaultFormData(schema: TaskSchema): FormData {
  */
 export function mergeFormData(
   defaults: FormData,
-  taskData: Record<string, unknown> | null,
+  taskData: FormData | null,
 ): FormData {
   if (!taskData) return defaults;
   return { ...defaults, ...taskData } as FormData;

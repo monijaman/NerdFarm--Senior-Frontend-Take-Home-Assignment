@@ -5,6 +5,7 @@ import { useTaskStore } from '@/store/taskStore';
 import { useUserStore } from '@/store/userStore';
 import type { User } from '@/types/user';
 import type { Task } from '@/types/task';
+import { ToastProvider } from '@/context/ToastContext';
 
 /** Bootstraps user + tasks from mock API on mount */
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -21,5 +22,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  return <>{children}</>;
+  return (
+    <ToastProvider>
+      {children}
+    </ToastProvider>
+  );
 }

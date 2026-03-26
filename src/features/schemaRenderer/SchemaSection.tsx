@@ -57,6 +57,7 @@ export function SchemaSection({
               field={field}
               value={formData[field.key] ?? null}
               onChange={onChange}
+              formData={formData}
             />
           </div>
         ))}

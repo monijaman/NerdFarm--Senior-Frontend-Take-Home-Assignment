@@ -1,20 +1,35 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import type { Field, FormData, TableRow } from '@/types/schema';
 import { Input } from '@/components/atoms/Input';
 import { Textarea } from '@/components/atoms/Textarea';
 import { Select } from '@/components/atoms/Select';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { formatCurrency } from '@/lib/format';
+import {getErrors} from '@/components';
 
 interface SchemaFieldProps {
   field: Field;
   value: FormData[string];
   onChange: (key: string, value: FormData[string]) => void;
+  formData?: FormData;
 }
 
-export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
+export function SchemaField({ field, value, onChange, formData = {} }: SchemaFieldProps) {
   const { key, label, readonly } = field;
+  const [fieldErrors, setFieldErrors] = useState<string[]>([]);
+  const errorId = `field-${key}-error`;
+
+  const handleFieldBlur = useCallback(() => {
+    if ('validation' in field && field.validation) {
+      const errors = getErrors(
+        { [key]: String(value ?? '') },
+        { [key]: field.validation }
+      );
+      setFieldErrors(errors[key] ?? []);
+    }
+  }, [key, value, field]);
 
   if (field.type === 'table') {
     const rows = (value as TableRow[]) ?? [];
@@ -64,11 +79,11 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
                   if (col.type === 'checkbox') {
                     return (
                       <td key={col.key} className="px-3 py-2">
-                        <input
-                          type="checkbox"
+                        <Checkbox
+                          label=""
                           checked={!!cellVal}
                           onChange={(e) => updateCell(e.target.checked)}
-                          className="h-4 w-4 rounded accent-primary"
+                          aria-label={`${field.label} row ${rowIdx + 1} ${col.label}`}
                         />
                       </td>
                     );
@@ -77,29 +92,25 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
                   if (col.type === 'select' && col.options) {
                     return (
                       <td key={col.key} className="px-3 py-2">
-                        <select
+                        <Select
                           value={(cellVal as string) ?? ''}
                           onChange={(e) => updateCell(e.target.value)}
-                          className="rounded border border-border px-2 py-1 text-xs bg-white focus:outline-none focus-visible:ring-1 focus-visible:ring-primary/40"
-                        >
-                          <option value="">—</option>
-                          {col.options.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
+                          options={col.options}
+                          className="text-xs"
+                          aria-label={`${field.label} row ${rowIdx + 1} ${col.label}`}
+                        />
                       </td>
                     );
                   }
 
                   return (
                     <td key={col.key} className="px-3 py-2">
-                      <input
+                      <Input
                         type={col.type === 'number' ? 'number' : col.type === 'date' ? 'date' : 'text'}
                         value={(cellVal as string) ?? ''}
                         onChange={(e) => updateCell(e.target.value)}
-                        className="rounded border border-border px-2 py-1 text-xs w-28 focus:outline-none focus-visible:ring-1 focus-visible:ring-primary/40"
+                        className="text-xs w-28"
+                        aria-label={`${field.label} row ${rowIdx + 1} ${col.label}`}
                       />
                     </td>
                   );
@@ -118,6 +129,11 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
             )}
           </tbody>
         </table>
+        {fieldErrors.length > 0 && (
+          <div id={errorId} className="mt-1 text-[11px] text-danger">
+            {fieldErrors.map((err, i) => <div key={i}>{err}</div>)}
+          </div>
+        )}
       </div>
     );
   }
@@ -130,6 +146,8 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
         checked={!!value}
         disabled={readonly}
         onChange={(e) => onChange(key, e.target.checked)}
+        aria-required={field.required ?? false}
+        aria-invalid={fieldErrors.length > 0}
       />
     );
   }
@@ -154,7 +172,17 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
           disabled={readonly}
           className={readonly ? 'bg-background text-muted cursor-default' : undefined}
           onChange={(e) => onChange(key, e.target.value || null)}
+          onBlur={handleFieldBlur}
+          error={fieldErrors.length > 0}
+          aria-required={field.required ?? false}
+          aria-invalid={fieldErrors.length > 0}
+          aria-describedby={fieldErrors.length > 0 ? errorId : undefined}
         />
+        {fieldErrors.length > 0 && (
+          <div id={errorId} className="mt-1 text-[11px] text-danger">
+            {fieldErrors.map((err, i) => <div key={i}>{err}</div>)}
+          </div>
+        )}
       </div>
     );
   }
@@ -170,7 +198,14 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
           readOnly={readonly}
           className={readonly ? 'bg-background text-muted cursor-default' : undefined}
           onChange={(e) => onChange(key, e.target.value)}
+          onBlur={handleFieldBlur}
+          error={fieldErrors.length > 0}
         />
+        {fieldErrors.length > 0 && (
+          <div className="mt-1 text-[11px] text-danger">
+            {fieldErrors.map((err, i) => <div key={i}>{err}</div>)}
+          </div>
+        )}
       </div>
     );
   }
@@ -193,7 +228,15 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
         readOnly={readonly}
         className={readonly ? 'bg-background text-muted cursor-default' : undefined}
         onChange={(e) => onChange(key, e.target.value)}
+        aria-required={field.required ?? false}
+        aria-invalid={fieldErrors.length > 0}
+        aria-describedby={fieldErrors.length > 0 ? errorId : undefined}
       />
+      {fieldErrors.length > 0 && (
+        <div id={errorId} className="mt-1 text-[11px] text-danger">
+          {fieldErrors.map((err, i) => <div key={i}>{err}</div>)}
+        </div>
+      )}
     </div>
   );
 }

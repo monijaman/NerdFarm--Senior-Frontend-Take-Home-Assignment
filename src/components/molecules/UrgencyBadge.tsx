@@ -11,7 +11,7 @@ export function UrgencyBadge({ slaDeadline }: UrgencyBadgeProps) {
   const variantMap = { high: 'danger', medium: 'warning', low: 'success' } as const;
 
   return (
-    <span className="inline-flex items-center gap-1.5" aria-label={`SLA: ${urgencyLabel[urgency]}`}>
+    <span className="inline-flex items-center gap-1.5" aria-label={`SLA: ${urgencyLabel[urgency]}`} role="status" aria-live="polite">
       <Badge variant={variantMap[urgency]}>
         {urgencyLabel[urgency]}
       </Badge>

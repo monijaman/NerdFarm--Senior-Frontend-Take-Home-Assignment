@@ -3,11 +3,6 @@
  */
 
 import ToastNotification from "@/components/Notifications";
- 
- 
+import getErrors from "@/components/Validation/index";
 
-export {
-  
-  ToastNotification,
-   
-};
+export { ToastNotification, getErrors };

@@ -9,13 +9,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ActionVariant, string> = {
   primary:
-    'bg-primary text-white hover:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed',
+    'bg-primary text-white hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed',
   secondary:
-    'bg-surface text-text border border-border hover:bg-border disabled:opacity-40 disabled:cursor-not-allowed',
+    'bg-surface text-text border border-border hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed',
   outline:
-    'border border-primary text-primary hover:bg-primary hover:text-white disabled:opacity-40 disabled:cursor-not-allowed',
+    'border border-primary text-primary hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed',
   destructive:
-    'bg-danger text-white hover:bg-danger-hover disabled:opacity-40 disabled:cursor-not-allowed',
+    'bg-danger text-white hover:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed',
 };
 
 const sizeClasses = {
