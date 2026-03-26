@@ -16,7 +16,7 @@ interface SchemaFieldProps {
   formData?: FormData;
 }
 
-export function SchemaField({ field, value, onChange, formData = {} }: SchemaFieldProps) {
+export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
   const { key, label, readonly } = field;
   const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const errorId = `field-${key}-error`;
