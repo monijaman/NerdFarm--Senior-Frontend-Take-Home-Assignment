@@ -1,0 +1,151 @@
+{
+  "schemaRef": "schedule-sale",
+  "title": "Schedule Foreclosure Sale",
+  "description": "Schedule the foreclosure sale date, confirm publication requirements, verify there are no active moratoriums or stays, and coordinate with the sheriff or trustee.",
+  "sections": [
+    {
+      "key": "judgment",
+      "heading": "Judgment Information",
+      "fields": [
+        {
+          "key": "judgmentDate",
+          "label": "Judgment Date",
+          "type": "date",
+          "readonly": true
+        },
+        {
+          "key": "judgmentAmount",
+          "label": "Judgment Amount",
+          "type": "currency",
+          "readonly": true
+        },
+        {
+          "key": "judgmentType",
+          "label": "Judgment Type",
+          "type": "text",
+          "readonly": true
+        }
+      ]
+    },
+    {
+      "key": "saleDetails",
+      "heading": "Sale Details",
+      "fields": [
+        {
+          "key": "saleType",
+          "label": "Sale Type",
+          "type": "select",
+          "options": ["Sheriff Sale", "Trustee Sale", "Referee Sale"],
+          "required": true
+        },
+        {
+          "key": "saleDate",
+          "label": "Proposed Sale Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "key": "saleTime",
+          "label": "Sale Time",
+          "type": "text",
+          "placeholder": "e.g., 10:00 AM",
+          "required": true
+        },
+        {
+          "key": "saleLocation",
+          "label": "Sale Location",
+          "type": "text",
+          "required": true,
+          "placeholder": "Courthouse address or online platform URL"
+        },
+        {
+          "key": "openingBid",
+          "label": "Opening Bid Amount",
+          "type": "currency",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "publication",
+      "heading": "Publication Requirements",
+      "fields": [
+        {
+          "key": "publicationRequired",
+          "label": "Publication Required",
+          "type": "checkbox"
+        },
+        {
+          "key": "newspaper",
+          "label": "Publication Newspaper",
+          "type": "text",
+          "visibleWhen": { "field": "publicationRequired", "equals": true }
+        },
+        {
+          "key": "publicationWeeks",
+          "label": "Number of Publication Weeks",
+          "type": "number",
+          "visibleWhen": { "field": "publicationRequired", "equals": true }
+        },
+        {
+          "key": "firstPublicationDate",
+          "label": "First Publication Date",
+          "type": "date",
+          "visibleWhen": { "field": "publicationRequired", "equals": true }
+        }
+      ]
+    },
+    {
+      "key": "blockers",
+      "heading": "Blockers & Stays",
+      "fields": [
+        {
+          "key": "activeBankruptcy",
+          "label": "Active Bankruptcy Stay",
+          "type": "select",
+          "options": ["None", "Chapter 7", "Chapter 13", "Chapter 11"],
+          "required": true
+        },
+        {
+          "key": "bankruptcyCaseNumber",
+          "label": "Bankruptcy Case Number",
+          "type": "text",
+          "visibleWhen": { "field": "activeBankruptcy", "notEquals": "None" }
+        },
+        {
+          "key": "reliefFromStay",
+          "label": "Relief from Stay Obtained",
+          "type": "checkbox",
+          "visibleWhen": { "field": "activeBankruptcy", "notEquals": "None" }
+        },
+        {
+          "key": "moratoriumCheck",
+          "label": "Moratorium Check Complete",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "key": "militaryStatusVerified",
+          "label": "SCRA Military Status Verified",
+          "type": "checkbox",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "actions": [
+    { "key": "confirm", "label": "Confirm Sale Scheduled", "variant": "primary", "requiresAllRequired": true },
+    { "key": "postpone", "label": "Postpone", "variant": "secondary" },
+    { "key": "cancel", "label": "Cancel Sale", "variant": "destructive" }
+  ],
+  "roleVisibility": {
+    "processor": {
+      "hiddenFields": [],
+      "disabledActions": []
+    },
+    "attorney": {
+      "hiddenFields": [],
+      "disabledActions": []
+    }
+  }
+}

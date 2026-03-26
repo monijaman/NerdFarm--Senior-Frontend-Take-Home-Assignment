@@ -1,0 +1,107 @@
+{
+  "d290f1ee-6c54-4b01-90e6-d701748f0851": {
+    "currentOwner": "Elena Martinez",
+    "propertyAddress": "1422 W Diversey Pkwy, Chicago, IL 60614",
+    "legalDescription": "LOT 14 IN BLOCK 3 IN SHEFFIELD'S ADDITION TO CHICAGO IN SECTION 29, TOWNSHIP 40 NORTH, RANGE 14 EAST OF THE THIRD PRINCIPAL MERIDIAN, IN COOK COUNTY, ILLINOIS",
+    "vestingType": null,
+    "ownershipVerified": false,
+    "liensTable": [
+      { "position": 1, "holder": "Chase Home Finance", "type": "Mortgage", "originalAmount": 342000, "recordedDate": "2019-06-15", "status": "Active" },
+      { "position": 2, "holder": "City of Chicago", "type": "Water Lien", "originalAmount": 1847, "recordedDate": "2024-11-02", "status": "Active" },
+      { "position": 3, "holder": "IRS", "type": "Federal Tax Lien", "originalAmount": 23500, "recordedDate": "2025-01-18", "status": "Active" }
+    ],
+    "lienNotes": null,
+    "taxesCurrent": null,
+    "titleStatus": null,
+    "reviewNotes": null
+  },
+  "3b241101-e2bb-4d5a-8f27-9f0c8d7e6a5b": {
+    "borrowerName": "David R. Thompson",
+    "coBorrower": "None",
+    "loanNumber": "7743-2019-FL",
+    "loanType": "Conventional",
+    "defaultDate": "2025-08-01",
+    "unpaidBalance": 287450,
+    "partiesTable": [
+      { "name": "David R. Thompson", "role": "Borrower", "reason": "Primary obligor on Note", "includeInFiling": true },
+      { "name": "Unknown Tenant #1", "role": "Occupant", "reason": "Possible occupant per field inspection", "includeInFiling": true },
+      { "name": "Miami-Dade County Tax Collector", "role": "Lienholder", "reason": "Outstanding tax certificate", "includeInFiling": true },
+      { "name": "Homeowners Association of Palmetto Bay", "role": "Lienholder", "reason": "Recorded HOA lien", "includeInFiling": false }
+    ],
+    "additionalParties": null,
+    "courthouse": "Miami-Dade County Courthouse, 73 W Flagler St, Miami, FL 33130",
+    "filingMethod": null,
+    "filingFee": null,
+    "courtCaseNumber": null,
+    "filingDate": null,
+    "complaintReviewed": false,
+    "exhibitsAttached": false,
+    "signatureReady": false,
+    "reviewNotes": null
+  },
+  "9a8b7c6d-5e4f-4a3b-2c1d-0e9f8a7b6c5d": {
+    "judgmentDate": "2026-02-10",
+    "judgmentAmount": 198750,
+    "judgmentType": "Default Judgment — Non-Judicial",
+    "saleType": null,
+    "saleDate": null,
+    "saleTime": null,
+    "saleLocation": null,
+    "openingBid": null,
+    "publicationRequired": true,
+    "newspaper": null,
+    "publicationWeeks": null,
+    "firstPublicationDate": null,
+    "activeBankruptcy": null,
+    "moratoriumCheck": false,
+    "militaryStatusVerified": true
+  },
+  "7c9e6679-7425-40de-944b-e07fc1f90ae7": {
+    "defendantsTable": [
+      { "name": "Tamara L. Jackson", "address": "2100 N Ocean Blvd, Apt 4B, Fort Lauderdale, FL 33305", "attempts": 2, "served": false, "serviceDate": null, "serviceMethod": null },
+      { "name": "Unknown Spouse of Tamara L. Jackson", "address": "2100 N Ocean Blvd, Apt 4B, Fort Lauderdale, FL 33305", "attempts": 2, "served": false, "serviceDate": null, "serviceMethod": null }
+    ],
+    "processServerName": "Allied Process Services",
+    "processServerCompany": "Allied Legal Support Inc.",
+    "dateAssigned": "2026-03-05",
+    "specialInstructions": "Gated community — use call box code #4821. Doorman reports occupant usually home after 6 PM weekdays.",
+    "alternateServiceNeeded": null,
+    "affidavitReceived": false,
+    "serviceNotes": "Two attempts made at different times. Doorman confirms occupant still resides at address."
+  },
+  "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d": {
+    "judgmentDate": "2026-01-22",
+    "judgmentAmount": 312600,
+    "judgmentType": "Summary Judgment",
+    "saleType": "Sheriff Sale",
+    "saleDate": null,
+    "saleTime": null,
+    "saleLocation": null,
+    "openingBid": null,
+    "publicationRequired": true,
+    "newspaper": "Daily Business Review",
+    "publicationWeeks": 2,
+    "firstPublicationDate": null,
+    "activeBankruptcy": "Chapter 13",
+    "bankruptcyCaseNumber": "25-BK-14332",
+    "reliefFromStay": true,
+    "moratoriumCheck": false,
+    "militaryStatusVerified": false
+  },
+  "6b7c8d9e-0f1a-4b2c-3d4e-5f6a7b8c9d0e": {
+    "currentOwner": "Yuri Abramov & Natalia Abramov",
+    "propertyAddress": "5500 N Lincoln Ave, Chicago, IL 60625",
+    "legalDescription": "LOT 22 IN BUDLONG WOODS SUBDIVISION BEING A SUBDIVISION OF THE WEST HALF OF THE NORTHWEST QUARTER OF SECTION 18, TOWNSHIP 40 NORTH, RANGE 14 EAST OF THE THIRD PRINCIPAL MERIDIAN, IN COOK COUNTY, ILLINOIS",
+    "vestingType": "Joint Tenancy",
+    "ownershipVerified": true,
+    "liensTable": [
+      { "position": 1, "holder": "Wells Fargo Home Mortgage", "type": "Mortgage", "originalAmount": 415000, "recordedDate": "2018-03-22", "status": "Active" },
+      { "position": 2, "holder": "Discover Bank", "type": "Judgment Lien", "originalAmount": 8200, "recordedDate": "2024-09-14", "status": "Active" }
+    ],
+    "lienNotes": "Judgment lien from Discover may need to be addressed before sale. Verify if subordination is possible.",
+    "taxesCurrent": "Delinquent",
+    "delinquentAmount": 4200,
+    "titleStatus": null,
+    "reviewNotes": null
+  }
+}

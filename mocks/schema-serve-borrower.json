@@ -1,0 +1,125 @@
+{
+  "schemaRef": "serve-borrower",
+  "title": "Serve Borrower — Service of Process",
+  "description": "Coordinate service of process on the borrower and any co-defendants. Track service attempts, confirm proper service method per jurisdiction, and record proof of service.",
+  "sections": [
+    {
+      "key": "defendants",
+      "heading": "Defendants to Serve",
+      "fields": [
+        {
+          "key": "defendantsTable",
+          "label": "Service Tracker",
+          "type": "table",
+          "columns": [
+            { "key": "name", "label": "Defendant Name", "type": "text" },
+            { "key": "address", "label": "Service Address", "type": "text" },
+            { "key": "attempts", "label": "Attempts", "type": "number" },
+            { "key": "served", "label": "Served", "type": "checkbox" },
+            { "key": "serviceDate", "label": "Date Served", "type": "date" },
+            { "key": "serviceMethod", "label": "Method", "type": "select", "options": ["Personal", "Substitute", "Posting", "Publication"] }
+          ],
+          "editableColumns": ["attempts", "served", "serviceDate", "serviceMethod"]
+        }
+      ]
+    },
+    {
+      "key": "processServer",
+      "heading": "Process Server",
+      "fields": [
+        {
+          "key": "processServerName",
+          "label": "Process Server / Sheriff",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "processServerCompany",
+          "label": "Company",
+          "type": "text"
+        },
+        {
+          "key": "dateAssigned",
+          "label": "Date Assigned",
+          "type": "date",
+          "required": true
+        },
+        {
+          "key": "specialInstructions",
+          "label": "Special Instructions",
+          "type": "textarea",
+          "placeholder": "Gated community access codes, best times for service attempts, known evasion concerns..."
+        }
+      ]
+    },
+    {
+      "key": "alternateService",
+      "heading": "Alternate Service",
+      "fields": [
+        {
+          "key": "alternateServiceNeeded",
+          "label": "Alternate Service Required",
+          "type": "select",
+          "options": ["No", "Service by Publication", "Service by Posting", "Court Order Required"],
+          "required": true
+        },
+        {
+          "key": "motionFiledDate",
+          "label": "Motion for Alternate Service Filed",
+          "type": "date",
+          "visibleWhen": { "field": "alternateServiceNeeded", "notEquals": "No" }
+        },
+        {
+          "key": "courtOrderDate",
+          "label": "Court Order Granting Alternate Service",
+          "type": "date",
+          "visibleWhen": { "field": "alternateServiceNeeded", "equals": "Court Order Required" }
+        },
+        {
+          "key": "publicationNewspaper",
+          "label": "Publication Newspaper",
+          "type": "text",
+          "visibleWhen": { "field": "alternateServiceNeeded", "equals": "Service by Publication" }
+        }
+      ]
+    },
+    {
+      "key": "proofOfService",
+      "heading": "Proof of Service",
+      "fields": [
+        {
+          "key": "affidavitReceived",
+          "label": "Affidavit of Service Received",
+          "type": "checkbox"
+        },
+        {
+          "key": "affidavitFiledWithCourt",
+          "label": "Affidavit Filed with Court",
+          "type": "checkbox",
+          "visibleWhen": { "field": "affidavitReceived", "equals": true }
+        },
+        {
+          "key": "serviceNotes",
+          "label": "Service Notes",
+          "type": "textarea",
+          "placeholder": "Any issues with service, notes from process server, or concerns about sufficiency of service..."
+        }
+      ]
+    }
+  ],
+  "actions": [
+    { "key": "complete", "label": "Mark Service Complete", "variant": "primary", "requiresAllRequired": true },
+    { "key": "reassign", "label": "Reassign Process Server", "variant": "secondary" },
+    { "key": "escalate", "label": "Escalate — Service Issues", "variant": "outline" }
+  ],
+  "roleVisibility": {
+    "processor": {
+      "hiddenFields": [],
+      "disabledActions": []
+    },
+    "attorney": {
+      "hiddenFields": ["processServerCompany", "dateAssigned"],
+      "disabledActions": ["reassign"]
+    }
+  }
+}

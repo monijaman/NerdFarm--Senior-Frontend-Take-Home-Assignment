@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --color-primary:       #1E3A5F;
+  --color-primary-hover: #162d48;
+  --color-secondary:     #F59E0B;
+  --color-success:       #059669;
+  --color-danger:        #DC2626;
+  --color-danger-hover:  #B91C1C;
+  --color-warning:       #D97706;
+  --color-background:    #F1F5F9;
+  --color-surface:       #FFFFFF;
+  --color-border:        #E2E8F0;
+  --color-text:          #0F172A;
+  --color-muted:         #64748B;
+}
+
+/* ── Tailwind v4 theme mapping ─────────────────────────────── */
+@theme inline {
+  --color-primary:       var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-secondary:     var(--color-secondary);
+  --color-success:       var(--color-success);
+  --color-danger:        var(--color-danger);
+  --color-danger-hover:  var(--color-danger-hover);
+  --color-warning:       var(--color-warning);
+  --color-background:    var(--color-background);
+  --color-surface:       var(--color-surface);
+  --color-border:        var(--color-border);
+  --color-text:          var(--color-text);
+  --color-muted:         var(--color-muted);
+  --font-sans:           var(--font-geist-sans);
+}
+
+/* ── Slim scrollbars ────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #CBD5E1 transparent;
+}
+*::-webkit-scrollbar          { width: 5px; height: 5px; }
+*::-webkit-scrollbar-thumb    { background: #CBD5E1; border-radius: 4px; }
+*::-webkit-scrollbar-track    { background: transparent; }
+
+/* ── Base ───────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-geist-sans, Arial, sans-serif);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(30, 58, 95, 0.12);
+}

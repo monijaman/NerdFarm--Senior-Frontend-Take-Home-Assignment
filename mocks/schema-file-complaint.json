@@ -1,0 +1,161 @@
+{
+  "schemaRef": "file-complaint",
+  "title": "File Foreclosure Complaint",
+  "description": "Prepare and file the foreclosure complaint with the appropriate court. Verify all required parties are named, confirm filing fees, and record the case number assigned by the court.",
+  "sections": [
+    {
+      "key": "caseInfo",
+      "heading": "Case Information",
+      "fields": [
+        {
+          "key": "borrowerName",
+          "label": "Borrower / Defendant",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "coBorrower",
+          "label": "Co-Borrower / Co-Defendant",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "loanNumber",
+          "label": "Loan Number",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "loanType",
+          "label": "Loan Type",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "defaultDate",
+          "label": "Date of Default",
+          "type": "date",
+          "readonly": true
+        },
+        {
+          "key": "unpaidBalance",
+          "label": "Unpaid Principal Balance",
+          "type": "currency",
+          "readonly": true
+        }
+      ]
+    },
+    {
+      "key": "parties",
+      "heading": "Named Parties",
+      "fields": [
+        {
+          "key": "partiesTable",
+          "label": "Parties to Name in Complaint",
+          "type": "table",
+          "columns": [
+            { "key": "name", "label": "Party Name", "type": "text" },
+            { "key": "role", "label": "Role", "type": "text" },
+            { "key": "reason", "label": "Reason for Inclusion", "type": "text" },
+            { "key": "includeInFiling", "label": "Include", "type": "checkbox" }
+          ],
+          "editableColumns": ["includeInFiling"]
+        },
+        {
+          "key": "additionalParties",
+          "label": "Additional Parties to Add",
+          "type": "textarea",
+          "placeholder": "List any parties not shown above that should be named (e.g., unknown occupants, John/Jane Doe)..."
+        }
+      ]
+    },
+    {
+      "key": "filingDetails",
+      "heading": "Filing Details",
+      "fields": [
+        {
+          "key": "courthouse",
+          "label": "Filing Courthouse",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "filingMethod",
+          "label": "Filing Method",
+          "type": "select",
+          "options": ["E-File", "In-Person", "Mail"],
+          "required": true
+        },
+        {
+          "key": "filingFee",
+          "label": "Filing Fee",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "feeWaiverRequested",
+          "label": "Fee Waiver Requested",
+          "type": "checkbox"
+        },
+        {
+          "key": "courtCaseNumber",
+          "label": "Court Case Number (assigned after filing)",
+          "type": "text",
+          "placeholder": "Enter once assigned by the court"
+        },
+        {
+          "key": "filingDate",
+          "label": "Date Filed",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "key": "review",
+      "heading": "Attorney Review",
+      "fields": [
+        {
+          "key": "complaintReviewed",
+          "label": "Complaint Document Reviewed",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "key": "exhibitsAttached",
+          "label": "All Exhibits Attached",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "key": "signatureReady",
+          "label": "Ready for Signature",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "key": "reviewNotes",
+          "label": "Attorney Notes",
+          "type": "textarea",
+          "placeholder": "Any concerns, special instructions, or deviations from standard complaint template..."
+        }
+      ]
+    }
+  ],
+  "actions": [
+    { "key": "file", "label": "Mark as Filed", "variant": "primary", "requiresAllRequired": true },
+    { "key": "sendback", "label": "Send Back for Corrections", "variant": "secondary" },
+    { "key": "hold", "label": "Place on Hold", "variant": "outline" }
+  ],
+  "roleVisibility": {
+    "processor": {
+      "hiddenFields": ["reviewNotes"],
+      "hiddenSections": ["review"],
+      "disabledActions": ["file"]
+    },
+    "attorney": {
+      "hiddenFields": [],
+      "hiddenSections": [],
+      "disabledActions": []
+    }
+  }
+}

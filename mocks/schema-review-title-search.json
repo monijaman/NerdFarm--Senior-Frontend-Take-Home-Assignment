@@ -1,0 +1,144 @@
+{
+  "schemaRef": "review-title-search",
+  "title": "Review Title Search Results",
+  "description": "Review the title search report, verify ownership chain, identify liens and encumbrances, and determine if the title is clear for foreclosure proceedings.",
+  "sections": [
+    {
+      "key": "property",
+      "heading": "Property & Ownership",
+      "fields": [
+        {
+          "key": "currentOwner",
+          "label": "Current Owner of Record",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "propertyAddress",
+          "label": "Property Address",
+          "type": "text",
+          "readonly": true
+        },
+        {
+          "key": "legalDescription",
+          "label": "Legal Description",
+          "type": "textarea",
+          "readonly": true
+        },
+        {
+          "key": "vestingType",
+          "label": "Vesting Type",
+          "type": "select",
+          "options": ["Fee Simple", "Joint Tenancy", "Tenancy in Common", "Life Estate", "Trust"],
+          "required": true
+        },
+        {
+          "key": "ownershipVerified",
+          "label": "Ownership Chain Verified",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "key": "liens",
+      "heading": "Liens & Encumbrances",
+      "fields": [
+        {
+          "key": "liensTable",
+          "label": "Liens Found",
+          "type": "table",
+          "columns": [
+            { "key": "position", "label": "Position", "type": "number" },
+            { "key": "holder", "label": "Lienholder", "type": "text" },
+            { "key": "type", "label": "Lien Type", "type": "text" },
+            { "key": "originalAmount", "label": "Original Amount", "type": "currency" },
+            { "key": "recordedDate", "label": "Recorded", "type": "date" },
+            { "key": "status", "label": "Status", "type": "select", "options": ["Active", "Released", "Subordinated", "Disputed"] }
+          ],
+          "editableColumns": ["status"]
+        },
+        {
+          "key": "lienNotes",
+          "label": "Lien Review Notes",
+          "type": "textarea",
+          "placeholder": "Note any lien priority disputes, missing releases, or unusual encumbrances..."
+        }
+      ]
+    },
+    {
+      "key": "taxStatus",
+      "heading": "Tax Status",
+      "fields": [
+        {
+          "key": "taxesCurrent",
+          "label": "Property Taxes Current",
+          "type": "select",
+          "options": ["Current", "Delinquent", "Tax Sale Pending", "Unknown"],
+          "required": true
+        },
+        {
+          "key": "delinquentAmount",
+          "label": "Delinquent Amount",
+          "type": "currency",
+          "visibleWhen": { "field": "taxesCurrent", "notEquals": "Current" }
+        },
+        {
+          "key": "taxSaleDate",
+          "label": "Tax Sale Date",
+          "type": "date",
+          "visibleWhen": { "field": "taxesCurrent", "equals": "Tax Sale Pending" }
+        }
+      ]
+    },
+    {
+      "key": "decision",
+      "heading": "Review Decision",
+      "fields": [
+        {
+          "key": "titleStatus",
+          "label": "Title Status Determination",
+          "type": "select",
+          "options": ["Clear", "Defects Found", "Requires Curative Action"],
+          "required": true
+        },
+        {
+          "key": "defectDescription",
+          "label": "Defect Description",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Describe all title defects found...",
+          "visibleWhen": { "field": "titleStatus", "equals": "Defects Found" }
+        },
+        {
+          "key": "curativeAction",
+          "label": "Recommended Curative Action",
+          "type": "select",
+          "options": ["Quiet Title Action", "Lien Release Request", "Re-Order Title", "Subordination Agreement", "Escalate to Attorney"],
+          "required": true,
+          "visibleWhen": { "field": "titleStatus", "equals": "Requires Curative Action" }
+        },
+        {
+          "key": "reviewNotes",
+          "label": "Reviewer Notes",
+          "type": "textarea",
+          "placeholder": "Any additional observations or concerns..."
+        }
+      ]
+    }
+  ],
+  "actions": [
+    { "key": "approve", "label": "Approve & Advance", "variant": "primary", "requiresAllRequired": true },
+    { "key": "reject", "label": "Return for Rework", "variant": "secondary" },
+    { "key": "escalate", "label": "Escalate to Attorney", "variant": "outline" }
+  ],
+  "roleVisibility": {
+    "processor": {
+      "hiddenFields": ["curativeAction"],
+      "disabledActions": ["approve"]
+    },
+    "attorney": {
+      "hiddenFields": [],
+      "disabledActions": []
+    }
+  }
+}
