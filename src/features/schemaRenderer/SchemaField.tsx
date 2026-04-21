@@ -22,13 +22,14 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
   const errorId = `field-${key}-error`;
 
   const handleFieldBlur = useCallback(() => {
-    if ('validation' in field && field.validation) {
-      const errors = getErrors(
-        { [key]: String(value ?? '') },
-        { [key]: field.validation }
-      );
-      setFieldErrors(errors[key] ?? []);
-    }
+    const rules: Record<string, unknown> = {};
+    if (field.required) rules.required = true;
+    if (Object.keys(rules).length === 0) return;
+    const errors = getErrors(
+      { [key]: String(value ?? '') },
+      { [key]: rules }
+    );
+    setFieldErrors(errors[key] ?? []);
   }, [key, value, field]);
 
   if (field.type === 'table') {
@@ -228,6 +229,7 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
         readOnly={readonly}
         className={readonly ? 'bg-background text-muted cursor-default' : undefined}
         onChange={(e) => onChange(key, e.target.value)}
+        onBlur={handleFieldBlur}
         aria-required={field.required ?? false}
         aria-invalid={fieldErrors.length > 0}
         aria-describedby={fieldErrors.length > 0 ? errorId : undefined}
