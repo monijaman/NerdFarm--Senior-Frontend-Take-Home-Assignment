@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { TaskSchema, FormData, RoleRules } from '@/types/schema';
-import type { UserRole } from '@/types/user';
-import { getAllVisibleRequiredFields } from '@/lib/visibility';
-import { isFormValid } from '@/lib/validation';
-import { Button } from '@/components/atoms/Button';
-import { SchemaSection } from './SchemaSection';
+import type { TaskSchema, FormData, RoleRules } from "@/types/schema";
+import type { UserRole } from "@/types/user";
+import { getAllVisibleRequiredFields } from "@/lib/visibility";
+import { isFormValid } from "@/lib/validation";
+import { Button } from "@/components/atoms/Button";
+import { SchemaSection } from "./SchemaSection";
 
 interface SchemaRendererProps {
   schema: TaskSchema;
@@ -44,7 +44,9 @@ export function SchemaRenderer({
       {/* Schema title card */}
       <div className="bg-surface rounded-xl border border-border px-5 py-4 shadow-sm">
         <h2 className="text-[15px] font-bold text-text">{schema.title}</h2>
-        <p className="text-[12px] text-muted mt-1 leading-relaxed">{schema.description}</p>
+        <p className="text-[12px] text-muted mt-1 leading-relaxed">
+          {schema.description}
+        </p>
       </div>
 
       {/* Sections */}
@@ -64,7 +66,9 @@ export function SchemaRenderer({
       {/* Actions card */}
       <div className="bg-surface rounded-xl border border-border px-5 py-4 flex items-center gap-3 flex-wrap shadow-sm">
         {schema.actions.map((action) => {
-          const isDisabledByRole = roleRules.disabledActions.includes(action.key);
+          const isDisabledByRole = roleRules.disabledActions.includes(
+            action.key,
+          );
           const isDisabledByValidation =
             action.requiresAllRequired && !formIsValid;
           const disabled = isDisabledByRole || isDisabledByValidation;

@@ -21,7 +21,7 @@ export function SchemaField({ field, value, onChange }: SchemaFieldProps) {
   const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const errorId = `field-${key}-error`;
 
-  const handleFieldBlur = useCallback(() => {
+    const handleFieldBlur = useCallback(() => {
     const rules: Record<string, unknown> = {};
     if (field.required) rules.required = true;
     if (Object.keys(rules).length === 0) return;
